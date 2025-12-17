@@ -1,29 +1,18 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:location/location.dart';
-import 'package:permission_handler/permission_handler.dart'
-    hide PermissionStatus;
-import 'package:real_estate/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../constants/ui_constants.dart';
-import 'dart:io';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+part of "../homescout_library.dart";
 
 final storage = FlutterSecureStorage();
 
+void printRed(dynamic data) {
+  // ANSI escape code for Red text (Foreground color 31)
+  const String redColor = '\x1B[31m';
+  // ANSI escape code to reset the color back to normal
+  const String resetColor = '\x1B[0m';
+
+  // Print the data wrapped in the color codes
+  print('$redColor$data$resetColor');
+}
+
+//compress image before upload to reduce size
 Future<List<XFile?>> compressImage(List<File> files) async {
   List<XFile?> results = [];
 
@@ -43,6 +32,7 @@ Future<List<XFile?>> compressImage(List<File> files) async {
   return results;
 }
 
+//handle sign in with google option
 Future<User?> handleSignIn() async {
   if (GoogleSignIn.instance.supportsAuthenticate()) {
     try {
@@ -89,6 +79,7 @@ Future<User?> handleSignIn() async {
   }
 }
 
+//for loading custom svg's
 SvgPicture loadSVG(
   String path, {
   Color? color,
@@ -149,6 +140,7 @@ Future<void> requestCameraPermission({required Function isGranted}) async {
   }
 }
 
+//format currency as its entered during the basic info stage
 class CurrencyInputFormatter extends TextInputFormatter {
   final NumberFormat _formatter;
 
@@ -182,20 +174,7 @@ class CurrencyInputFormatter extends TextInputFormatter {
   }
 }
 
-Future<File> copyAssetToFile(String assetPath, String filename) async {
-  final byteData = await rootBundle.load(assetPath);
-
-  final dir = await getApplicationDocumentsDirectory();
-
-  final file = File('${dir.path}/$filename');
-
-  await file.writeAsBytes(
-    byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
-  );
-
-  return file;
-}
-
+//check whether the user is still signed in via token stored locally
 Future<bool> isTokenValid() async {
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('jwt_token');
@@ -259,5 +238,12 @@ extension CurrencyParsing on String {
     return int.parse(numericString);
   }
 }
+
+String createChatId(String uid1, String uid2) {
+  final ids = [uid1, uid2];
+  ids.sort();
+  return ids.join('_');
+}
+
 
 

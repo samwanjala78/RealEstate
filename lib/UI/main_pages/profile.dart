@@ -1,13 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../constants/ui_constants.dart';
-import '../../data/viewmodel.dart';
-import '../../main.dart';
-import '../../util/util.dart';
-import '../ui.dart';
+part of "../../homescout_library.dart";
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -163,22 +154,30 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
 
+    final double systemBottomInset = MediaQuery.of(context).padding.bottom;
+
+    final double totalBottomPadding =
+        kBottomNavigationBarHeight + systemBottomInset;
+
     return SingleChildScrollView(
-      child: SpacedColumn(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          topSpacer(context),
-          profilePic,
-          Text("Property Management", style: context.titleMedium),
-          propertyManagement,
-          Text("Account Management", style: context.titleMedium),
-          accountManagement,
-          Text("Preferences", style: context.titleMedium),
-          preferences,
-          Text("Support", style: context.titleMedium),
-          support,
-          logout,
-        ],
+      child: Padding(
+        padding: EdgeInsets.only(bottom: totalBottomPadding),
+        child: SpacedColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            topSpacer(context),
+            profilePic,
+            Text("Property Management", style: context.titleMedium),
+            propertyManagement,
+            Text("Account Management", style: context.titleMedium),
+            accountManagement,
+            Text("Preferences", style: context.titleMedium),
+            preferences,
+            Text("Support", style: context.titleMedium),
+            support,
+            logout,
+          ],
+        ),
       ),
     );
   }

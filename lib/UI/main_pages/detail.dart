@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/util/util.dart';
-
-import '../../data/viewmodel.dart';
-import '../../constants/ui_constants.dart';
+part of "../../homescout_library.dart";
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});

@@ -1,11 +1,4 @@
-import 'package:bcrypt/bcrypt.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/main.dart';
-import '../../data/viewmodel.dart';
+part of "../../homescout_library.dart";
 
 class ResetPasswordPage extends StatefulWidget {
   const ResetPasswordPage({super.key});

@@ -1,18 +1,4 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:ui';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:implicitly_animated_list/implicitly_animated_list.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/data/viewmodel.dart';
-import 'package:real_estate/util/util.dart';
-import 'package:shimmer/shimmer.dart';
+part of "../homescout_library.dart";
 
 class AnimatedButton extends StatefulWidget {
   const AnimatedButton({
@@ -247,7 +233,8 @@ class _RefreshSpacedVerticalListViewState
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: widget.padding),
-      child: RefreshIndicator(
+      child: RefreshIndicator.adaptive(
+        edgeOffset: kToolbarHeight,
         onRefresh: widget.onRefresh,
         child: ImplicitlyAnimatedList(
           itemEquality: (a, b) {
@@ -263,22 +250,36 @@ class _RefreshSpacedVerticalListViewState
   }
 }
 
-Widget spacedVerticalListView(
-  List<Widget> listItems, {
-  double padding = paddingValue,
-}) {
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: padding),
-    child: ListView.separated(
-      itemCount: listItems.length,
-      itemBuilder: (context, index) {
-        return listItems[index];
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return VerticalSpacer();
-      },
-    ),
-  );
+class SpacedVerticalListView extends StatefulWidget {
+  final double padding;
+  final List<Widget> listItems;
+
+  const SpacedVerticalListView({
+    super.key,
+    this.padding = paddingValue,
+    required this.listItems,
+  });
+
+  @override
+  State<SpacedVerticalListView> createState() => _SpacedVerticalListViewState();
+}
+
+class _SpacedVerticalListViewState extends State<SpacedVerticalListView> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: widget.padding),
+      child: ImplicitlyAnimatedList(
+        itemEquality: (a, b) {
+          return a.hashCode == b.hashCode;
+        },
+        itemBuilder: (context, widget) {
+          return Column(children: [widget, VerticalSpacer()]);
+        },
+        itemData: widget.listItems,
+      ),
+    );
+  }
 }
 
 Widget spacedHorizontalListView(List<Widget> listItems) {
@@ -354,7 +355,7 @@ class _SizedCardState extends State<SizedCard> {
   @override
   Widget build(BuildContext context) {
     return clickableCard(
-      borderRadius: 8,
+      borderRadius: radiusValue,
       color: widget.color,
       onTap: widget.onTap,
       child: SpacedRow(
@@ -409,7 +410,9 @@ class _PlainTextFieldState extends State<PlainTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      textCapitalization: TextCapitalization.sentences,
+      textCapitalization: widget.textInputType == TextInputType.emailAddress
+          ? TextCapitalization.none
+          : TextCapitalization.sentences,
       controller: widget.controller,
       onTap: widget.onTap,
       keyboardType: widget.textInputType,
@@ -738,8 +741,12 @@ Widget customContainer({
   Color color = Colors.black54,
   double borderRadius = 999,
   EdgeInsetsGeometry padding = const EdgeInsets.all(0),
+  double? height,
+  double? width,
 }) {
   return Container(
+    height: height,
+    width: width,
     decoration: BoxDecoration(
       color: color,
       borderRadius: BorderRadiusGeometry.all(Radius.circular(borderRadius)),
@@ -753,7 +760,7 @@ Widget roundedButton({
   required final void Function() onPressed,
   required Widget child,
   ButtonStyle? style,
-  required BuildContext context
+  required BuildContext context,
 }) {
   return ElevatedButton(
     key: key,
@@ -765,9 +772,9 @@ Widget roundedButton({
             borderRadius: BorderRadius.circular(radiusValue),
           ),
           backgroundColor: blendColors(
-          context.backgroundColor,
-          context.backgroundOverlay,
-        ),
+            context.backgroundColor,
+            context.backgroundOverlay,
+          ),
         ),
     child: child,
   );
@@ -802,7 +809,7 @@ Widget customButton({
   AlignmentGeometry alignment = Alignment.centerRight,
   MainAxisSize mainAxisSize = MainAxisSize.min,
   double innerPadding = 0,
-  required BuildContext context
+  required BuildContext context,
 }) {
   return Align(
     alignment: alignment,
@@ -885,8 +892,19 @@ Widget featuresGrid({
   );
 }
 
-Widget loadingIcon = Center(
-  child: LoadingAnimationWidget.fourRotatingDots(color: Colors.blue, size: 60),
+Widget loadingIcon(BuildContext context, String loadingText) => Center(
+  child: customContainer(
+    borderRadius: radiusValue,
+    color: context.backgroundColor,
+    child: IntrinsicHeight(
+      child: SpacedColumn(
+        children: [
+          LoadingAnimationWidget.twoRotatingArc(color: Colors.white.withValues(), size: 30),
+          Text(loadingText),
+        ],
+      ),
+    ),
+  ),
 );
 
 Widget placeHolderShimmer({
@@ -960,17 +978,20 @@ class _CustomMapState extends State<CustomMap> {
       zoom: 17,
     );
 
-    return GoogleMap(
-      markers: widget.markers,
-      initialCameraPosition: initialPosition,
-      onMapCreated: widget.onMapCreated,
-      onTap: widget.onTap,
-      zoomControlsEnabled: widget.zoomControlsEnabled,
-      scrollGesturesEnabled: widget.scrollGesturesEnabled,
-      rotateGesturesEnabled: widget.rotateGesturesEnabled,
-      tiltGesturesEnabled: widget.tiltGesturesEnabled,
-      myLocationButtonEnabled: widget.myLocationButtonEnabled,
-      zoomGesturesEnabled: widget.zoomGesturesEnabled,
+    return SafeArea(
+      top: false,
+      child: GoogleMap(
+        markers: widget.markers,
+        initialCameraPosition: initialPosition,
+        onMapCreated: widget.onMapCreated,
+        onTap: widget.onTap,
+        zoomControlsEnabled: widget.zoomControlsEnabled,
+        scrollGesturesEnabled: widget.scrollGesturesEnabled,
+        rotateGesturesEnabled: widget.rotateGesturesEnabled,
+        tiltGesturesEnabled: widget.tiltGesturesEnabled,
+        myLocationButtonEnabled: widget.myLocationButtonEnabled,
+        zoomGesturesEnabled: widget.zoomGesturesEnabled,
+      ),
     );
   }
 }
@@ -1023,7 +1044,7 @@ AppBar blurredAppBar({
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Container(
           color: context.getBrightness == Brightness.dark
-              ? Color(0xFF121212).withValues(alpha: 0.8)
+              ? Colors.black.withValues(alpha: 0.8)
               : Colors.white.withValues(alpha: 0.8),
         ),
       ),

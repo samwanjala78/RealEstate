@@ -1,4 +1,4 @@
-part of "upload_flow_library.dart";
+part of "../../homescout_library.dart";
 
 class ContactInformation extends StatefulWidget {
   const ContactInformation({super.key});
@@ -120,7 +120,7 @@ class _ContactInformationState extends State<ContactInformation> {
       body: Stack(
         children: [
           contactInfoForms,
-          _isPropertyUploading ? loadingIcon : Container(),
+          _isPropertyUploading ? loadingIcon(context, "Uploading") : Container(),
         ],
       ),
     );

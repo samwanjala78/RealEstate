@@ -1,17 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart'
-    hide LatLng;
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/main_pages/search.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/network/network_util.dart';
-import 'package:real_estate/util/util.dart';
-import '../../data/viewmodel.dart';
+part of "../../homescout_library.dart";
 
 class SearchLocation extends StatefulWidget {
   const SearchLocation({super.key});

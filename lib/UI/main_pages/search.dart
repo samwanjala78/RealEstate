@@ -1,14 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/util/util.dart';
-
-import '../../data/viewmodel.dart';
-import '../../main.dart';
+part of "../../homescout_library.dart";
 
 double defaultLatitude = -1.286389;
 double defaultLongitude = 36.8219;
@@ -20,7 +10,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-List<bool> _isSelected = [true, false];
+List<bool> _isToggled = [true, false];
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
@@ -34,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
 
     Widget searchField = PlainTextField(
       controller: searchController,
-      hint: Text('Search properties'),
+      hint: Text('Search Properties'),
       onChanged: (value) {
         viewModel.search(value);
       },
@@ -42,15 +32,15 @@ class _SearchPageState extends State<SearchPage> {
 
     Widget toggleButtons = ToggleButtons(
       borderRadius: BorderRadius.circular(radiusValue),
-      isSelected: _isSelected,
+      isSelected: _isToggled,
       onPressed: (index) async {
         setState(() {
           if (index == 0) {
-            _isSelected[0] = true;
-            _isSelected[1] = false;
+            _isToggled[0] = true;
+            _isToggled[1] = false;
           } else {
-            _isSelected[0] = false;
-            _isSelected[1] = true;
+            _isToggled[0] = false;
+            _isToggled[1] = true;
           }
         });
         viewModel.locationData = await getCurrentLocation();
@@ -89,13 +79,21 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
 
+    final double systemBottomInset = MediaQuery.of(context).padding.bottom;
+
+    final double totalBottomPadding =
+        kBottomNavigationBarHeight + systemBottomInset;
+
     Widget propertiesListView = SingleChildScrollView(
-      child: Column(children: listItems),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: totalBottomPadding),
+        child: Column(children: listItems),
+      ),
     );
 
-    Widget propertiesList = listItems.isEmpty
-        ? Center(child: Text("No results", style: context.titleMedium))
-        : propertiesListView;
+    Widget propertiesList =  listItems.isEmpty
+          ? Center(child: Text("No Results", style: context.titleMedium))
+          : propertiesListView;
 
     Set<Marker> markers = {};
 
@@ -130,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
 
     Widget body = Expanded(
       child: IndexedStack(
-        index: _isSelected[0] ? 0 : 1,
+        index: _isToggled[0] ? 0 : 1,
         children: [propertiesList, mapScreen],
       ),
     );
@@ -143,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
         Padding(padding: paddingValueHorizontal, child: searchField),
         Padding(
           padding: paddingValueHorizontal,
-          child: Divider(color: context.backgroundColor),
+          child: Divider(color: context.tintedBackgroundColor),
         ),
         Padding(
           padding: paddingValueHorizontal,
@@ -155,8 +153,8 @@ class _SearchPageState extends State<SearchPage> {
                   ? Text("")
                   : FadedText(
                       searchController.text.isNotEmpty
-                          ? "${listItems.length} properties found"
-                          : "Recommended for you",
+                          ? "${listItems.length} Properties Found"
+                          : "Recommended For You",
                     ),
               toggleButtons,
             ],

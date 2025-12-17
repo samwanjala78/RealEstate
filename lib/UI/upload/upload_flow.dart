@@ -1,4 +1,4 @@
-part of "upload_flow_library.dart";
+part of "../../homescout_library.dart";
 
 var pageNumber = 1;
 

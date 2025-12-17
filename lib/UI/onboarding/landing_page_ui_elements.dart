@@ -1,17 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_intl_phone_field/countries.dart';
-import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
-import 'package:go_router/go_router.dart';
-import 'package:http/http.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/main.dart';
-import 'package:real_estate/network/network_util.dart';
-import 'package:real_estate/util/util.dart';
-
-import '../../data/viewmodel.dart';
+part of "../../homescout_library.dart";
 
 final _logInFormKey = GlobalKey<FormState>();
 
@@ -37,6 +24,7 @@ Widget loginForm({
       padding: 0,
       children: [
         PlainTextField(
+          textInputType: TextInputType.emailAddress,
           key: ValueKey("Email"),
           autofillHints: const [AutofillHints.email],
           errorText: emailErrorText,
@@ -65,7 +53,7 @@ Widget loginForm({
             onPressed: () {
               onShowPassPress();
             },
-            icon: Icon(Icons.remove_red_eye_outlined),
+            icon: Icon(Icons.remove_red_eye_outlined, color: context.fadedIconColor,),
           ),
         ),
         roundedButton(
@@ -102,7 +90,7 @@ Widget loginForm({
   );
 }
 
-User currentUser = User(
+LocalUser currentUser = LocalUser(
   firstName: "firstName",
   lastName: "lastName",
   email: "email",
@@ -221,7 +209,7 @@ Widget signupForm({
             onPressed: () {
               onShowPassPress();
             },
-            icon: Icon(Icons.remove_red_eye_outlined),
+            icon: Icon(Icons.remove_red_eye_outlined, color: context.fadedIconColor),
           ),
         ),
         roundedButton(

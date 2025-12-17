@@ -1,15 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/main.dart';
-import 'package:real_estate/util/util.dart';
-import '../../data/viewmodel.dart';
-import '../../network/network_util.dart';
+part of "../../homescout_library.dart";
 
 class ProfileSetupPage extends StatefulWidget {
   const ProfileSetupPage({super.key});
@@ -154,7 +143,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
           child: Stack(
             children: [
               contents,
-              _isProfileUploading ? loadingIcon : Container(),
+              _isProfileUploading ? loadingIcon(context, "Setting Up") : Container(),
             ],
           ),
         ),

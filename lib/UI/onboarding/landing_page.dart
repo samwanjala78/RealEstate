@@ -1,13 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/gen/assets.gen.dart';
-import 'package:real_estate/util/util.dart';
-import '../../data/viewmodel.dart';
-import 'landing_page_ui_elements.dart';
+part of "../../homescout_library.dart";
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -25,14 +16,19 @@ String? _passErrorText;
 class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
-    Icon icon = Icon(homeIcon, size: 40.0, color: Colors.blue);
+    Icon icon = Icon(
+      homeIcon,
+      size: 40.0,
+      color:Colors.blue,
+      fill: 1,
+    );
     PropertiesViewModel viewModel = Provider.of<PropertiesViewModel>(context);
 
     Widget welcomeText = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Welcome to Happyhousehunt",
+          "Welcome to Homescout",
           style: Theme.of(context).textTheme.headlineSmall,
         ),
 
@@ -195,7 +191,10 @@ class _SignInPageState extends State<SignInPage> {
     return SafeArea(
       child: Scaffold(
         body: Stack(
-          children: [landingPage, _registeringUser ? loadingIcon : Container()],
+          children: [
+            landingPage,
+            _registeringUser ? loadingIcon(context, "Signing In") : Container(),
+          ],
         ),
       ),
     );

@@ -1,14 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/main_pages/search.dart';
-import 'package:real_estate/data/viewmodel.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import 'package:real_estate/util/util.dart';
-import 'package:real_estate/main.dart';
+part of "../../homescout_library.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,7 +14,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         PropertiesViewModel viewModel = Provider.of<PropertiesViewModel>(
-          context,
+          this.context,
           listen: false,
         );
 
@@ -111,6 +101,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: SizedCard(
+                color: context.highlightColor,
                 children: [
                   customContainer(
                     padding: EdgeInsets.all(paddingValue),
@@ -136,6 +127,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: SizedCard(
+                color: context.highlightColor,
                 children: [
                   customContainer(
                     padding: EdgeInsets.all(paddingValue),
@@ -176,7 +168,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 viewModel.resetProperties();
               },
-              child: Text("Show all"),
+              child: Text("Show All"),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -317,7 +309,7 @@ class _HomePageState extends State<HomePage> {
     return RefreshSpacedVerticalListView(
       key: ValueKey(listItems.length),
       onRefresh: () async {
-        await viewModel.getProperties();
+        await viewModel.initApp();
       },
       listItems: listItems,
     );

@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/util/util.dart';
-import '../../data/viewmodel.dart';
-import '../../main.dart';
+part of "../../homescout_library.dart";
 
 class EmailPage extends StatefulWidget {
   const EmailPage({super.key});

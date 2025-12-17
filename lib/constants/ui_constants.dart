@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:material_symbols_icons/symbols.dart';
-
-import '../UI/ui.dart';
+part of "../../homescout_library.dart";
 
 NumberFormat currencyFormat = NumberFormat.simpleCurrency(
   locale: 'en_KE',
@@ -76,6 +72,7 @@ extension CustomHelpers on BuildContext {
 }
 
 const IconData filterIcon = Symbols.tune_rounded,
+    chatIcon = Symbols.message,
     apartmentIcon = Symbols.apartment_rounded,
     editIcon = Symbols.edit_rounded,
     lightModeIcon = Symbols.light_mode_rounded,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "406230987978",
+    "project_id": "homescout-4cdfb",
+    "storage_bucket": "homescout-4cdfb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406230987978:android:f6c1964ba6ca000ac4f033",
+        "android_client_info": {
+          "package_name": "com.example.homescout"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzbN-BFSL1CYpxtZcLulTUWCVURTGSnhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,23 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
-import 'package:retry/retry.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../UI/ui.dart';
-import '../data/viewmodel.dart';
-import '../util/util.dart';
+part of "../../homescout_library.dart";
 
 enum Queries { liked, location, title }
 
 enum Method { get, post, put, delete }
 
 final String _baseUrl = "https://propertiesbackend.onrender.com";
+// final String _baseUrl = "http://192.168.100.4:4000";
 
 class _NetworkLayer {
   final String _propertiesUrl = "$_baseUrl/properties";
@@ -203,7 +191,7 @@ class _NetworkLayer {
     await request("$_propertiesUrl/$id", method: Method.delete);
   }
 
-  Future<User?> signUp(User user) async {
+  Future<LocalUser?> signUp(LocalUser user) async {
     Map<String, dynamic> body = await request(
       _registerUrl,
       body: user.toJson(),
@@ -217,14 +205,14 @@ class _NetworkLayer {
 
     Map<String, dynamic> userJson = body['user'];
 
-    User responseUser = User.fromJson(userJson);
+    LocalUser responseUser = LocalUser.fromJson(userJson);
 
     await prefs.setString("userId", responseUser.id);
 
     return user;
   }
 
-  Future<User?> signIn({
+  Future<LocalUser?> signIn({
     required String userEmail,
     required String userPassword,
   }) async {
@@ -241,30 +229,30 @@ class _NetworkLayer {
 
     Map<String, dynamic> userJson = body['user'];
 
-    User user = User.fromJson(userJson);
+    LocalUser user = LocalUser.fromJson(userJson);
 
     await prefs.setString("userId", user.id);
 
     return user;
   }
 
-  Future<User?> updateUser(User user) async {
+  Future<LocalUser?> updateUser(LocalUser user) async {
     Map<String, dynamic> body = await request(
       "$_userUrl/${user.id}",
       body: user.toJson(),
       method: Method.put,
     );
 
-    return User.fromJson(body);
+    return LocalUser.fromJson(body);
   }
 
-  Future<User?> getUserByEmail(String email) async {
+  Future<LocalUser?> getUserByEmail(String email) async {
     Map<String, dynamic> body = await request(
       "$_userUrl/${email.trim().toLowerCase()}",
       method: Method.get,
     );
 
-    return User.fromJson(body);
+    return LocalUser.fromJson(body);
   }
 
   Future<Property?> validateView({
@@ -312,7 +300,7 @@ class _NetworkLayer {
     return null;
   }
 
-  Future<User?> fetchAccount(String userId) async {
+  Future<LocalUser?> fetchAccount(String userId) async {
     log("userId: $userId");
     Map<String, dynamic> body = await request(
       _accountLookUpUrl,
@@ -322,7 +310,7 @@ class _NetworkLayer {
 
     log("body: $body");
 
-    return User.fromJson(body["user"]);
+    return LocalUser.fromJson(body["user"]);
   }
 }
 

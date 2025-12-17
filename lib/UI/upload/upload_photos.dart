@@ -1,4 +1,4 @@
-part of "upload_flow_library.dart";
+part of "../../homescout_library.dart";
 
 class UploadPhotos extends StatefulWidget {
   const UploadPhotos({super.key});
@@ -169,7 +169,7 @@ class _UploadPhotosState extends State<UploadPhotos> {
       body: Stack(
         children: [
           uploadPhotoFlow,
-          _isPhotosUploading ? loadingIcon : Container(),
+          _isPhotosUploading ? loadingIcon(context, "Uploading") : Container(),
         ],
       ),
     );

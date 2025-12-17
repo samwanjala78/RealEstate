@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate/UI/ui.dart';
-import 'package:real_estate/constants/ui_constants.dart';
-import '../../data/viewmodel.dart';
-import '../../util/util.dart';
-import '../../main.dart';
+part of "../../homescout_library.dart";
 
 class SavedPage extends StatefulWidget {
   const SavedPage({super.key});
@@ -59,7 +52,7 @@ class _SavedPageState extends State<SavedPage> {
             listItems: viewModel.likedProperties
                 .map((property) => mappedCard(property))
                 .toList(),
-            onRefresh: () => viewModel.fetchSavedProperties(),
+            onRefresh: () => viewModel.initApp(),
           );
   }
 }
